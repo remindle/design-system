@@ -1,0 +1,85 @@
+name: Release package
+
+on:
+  workflow_dispatch:
+
+jobs:
+
+  release:
+    name: Publish
+    runs-on: ubuntu-latest
+    outputs:
+      new_release_version: ${{ steps.semantic.outputs.new_release_version }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js with GitHub Package Registry
+        uses: actions/setup-node@v1
+        with:
+          node-version: '14.x'
+          registry-url: 'https://npm.pkg.github.com'
+
+      - name: Install Yarn
+        run: npm install -g yarn
+
+        # Skip post-install scripts here, as a malicious
+        # script could steal NODE_AUTH_TOKEN.
+      - name: Install dependencies
+        run: yarn install --ignore-scripts
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build package
+        run: yarn build
+
+      - name: Semantic Release
+        uses: cycjimmy/semantic-release-action@v2
+        id: semantic # Need an `id` for output variables
+        with:
+          extra_plugins: |
+            @semantic-release/git
+            @semantic-release/changelog
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+        # publishing is a seperate step as `cycjimmy/semantic-release-action` does not work properly
+      - name: Publish package to GitHub Package Registry
+        run: yarn publish
+        if: steps.semantic.outputs.new_release_published == 'true'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  notify:
+    name: Post to Slack
+    runs-on: ubuntu-latest
+    needs:
+      - release
+    if: ${{ !failure() && !cancelled() }}
+    steps:
+      - name: Post Slack Notification
+        uses: tokorom/action-slack-incoming-webhook@main
+        env:
+          INCOMING_WEBHOOK_URL: ${{ secrets.SLACK_AUTOMATION_WEBHOOK_URL }}
+        with:
+          text: "@remindle/design-tokens version ${{ needs.release.outputs.new_release_version }} released!"
+          attachments: |
+            [
+              {
+                "color": "good",
+                "author_name": "${{ github.actor }}",
+                "author_icon": "${{ github.event.sender.avatar_url }}",
+                "fields": [
+                  {
+                    "title": "Changelog for this release",
+                    "value": "${{ github.event.repository.url }}/releases/tag/v${{ needs.release.outputs.new_release_version }}"
+                  },
+                  {
+                    "title": "GitHub Actions URL",
+                    "value": "${{ github.event.repository.url }}/actions/runs/${{ github.run_id }}"
+                  }
+                ]
+              }
+            ]
