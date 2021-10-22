@@ -1,0 +1,38 @@
+{
+  "name": "@remindle/design-system",
+  "version": "0.0.1",
+  "files": [
+    "dist"
+  ],
+  "main": "dist/index.js",
+  "scripts": {
+    "tokens:link": "yarn link @remindle/design-tokens",
+    "tokens:unlink": "yarn unlink @remindle/design-tokens; yarn install --force --check-files"
+  },
+  "engines": {
+    "node": ">=10",
+    "npm": ">=5"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/remindle/design-system"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "dependencies": {
+    "@remindle/design-tokens": "^1.0.0"
+  }
+}
