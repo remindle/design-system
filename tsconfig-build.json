@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "dist"
+  },
+  "include": [
+    "src/**/*"
+  ],
+  // Since this configuration is used for publishing a package, we don't want
+  // to publish storybook stories too, only the components.
+  "exclude": [
+    "src/**/*.stories.*",
+    "src/shared/global-style.ts"
+  ]
+}
