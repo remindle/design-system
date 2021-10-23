@@ -6,6 +6,11 @@
   ],
   "main": "dist/index.js",
   "scripts": {
+    "storybook": "start-storybook -p 6006 -s public",
+    "build-storybook": "build-storybook",
+    "build:babel": "babel src -d dist --extensions \".js,.jsx,.ts,.tsx\" --ignore \"**/*.test.js\" --ignore \"**/*.stories.tsx\"",
+    "build:tsc": "tsc --declaration --emitDeclarationOnly --project tsconfig-build.json",
+    "build": "yarn build:babel && yarn build:tsc",
     "tokens:link": "yarn link @remindle/design-tokens",
     "tokens:unlink": "yarn unlink @remindle/design-tokens; yarn install --force --check-files"
   },
@@ -34,5 +39,14 @@
   },
   "dependencies": {
     "@remindle/design-tokens": "^1.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.15.8",
+    "@storybook/addon-actions": "^6.3.12",
+    "@storybook/addon-essentials": "^6.3.12",
+    "@storybook/addon-knobs": "^6.3.1",
+    "@storybook/addon-links": "^6.3.12",
+    "@storybook/react": "^6.3.12",
+    "babel-loader": "^8.2.3"
   }
 }

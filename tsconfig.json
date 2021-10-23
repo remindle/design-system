@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "incremental": false,
+    "noImplicitAny": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "jsx": "react",
+    "module": "commonjs",
+    "skipDefaultLibCheck": true,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "target": "es5",
+    "types": ["jest", "node", "./types"],
+    "lib": ["es2017", "dom"]
+  },
+  "include": [
+    "src",
+    "node_modules/@remindle/**/*"
+  ],
+  "exclude": [
+    "node_modules/@remindle/design-tokens/build/js/*"
+  ]
+}
