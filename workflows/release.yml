@@ -64,7 +64,7 @@ jobs:
         env:
           INCOMING_WEBHOOK_URL: ${{ secrets.SLACK_AUTOMATION_WEBHOOK_URL }}
         with:
-          text: "@remindle/design-tokens version ${{ needs.release.outputs.new_release_version }} released!"
+          text: "@remindle/design-system version ${{ needs.release.outputs.new_release_version }} released!"
           attachments: |
             [
               {
