@@ -2,21 +2,33 @@ import React, { ReactNode } from 'react';
 
 import { StyledButton } from './Button.style';
 
-type ButtonType = 'button' | 'submit';
-type ButtonColor = 'primary' | 'secondary' | 'default';
-type ButtonSize = 'small' | 'large';
+export enum ButtonColor {
+  PRIMARY = 'primary',
+  SECONDARY = 'secondary',
+  TETRIARY = 'tetriary',
+}
+
+export enum ButtonSize {
+  SMALL = 'small',
+  LARGE = 'large',
+}
+
+export enum ButtonType {
+  BUTTON = 'button',
+  SUBMIT = 'submit',
+}
 
 export interface ButtonProps {
   /**
-   * Button color type.
+   * Optional button color
    */
   color?: ButtonColor;
   /**
-   * How large should the button be?
+   * Optional button size
    */
   size?: ButtonSize;
   /**
-   * Button type
+   * Optional tutton type
    */
   type?: ButtonType;
   /**
@@ -63,16 +75,16 @@ export const Button: React.FC<ButtonProps> = (props) => {
   return (
     <StyledButton as={isButton ? 'button' : 'a'} href={href} { ...props }>
       <span>
-          {children}
-        </span>
+        {children}
+      </span>
     </StyledButton>
   );
 };
 
 Button.defaultProps = {
-  color: 'primary',
-  size: 'small',
-  type: 'button',
+  color: ButtonColor.PRIMARY,
+  size: ButtonSize.SMALL,
+  type: ButtonType.BUTTON,
   className: '',
   href: '',
 };

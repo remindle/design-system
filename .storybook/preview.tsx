@@ -1,3 +1,5 @@
+import '../src/styles/index.css';
+
 import React from 'react';
 import { Normalize } from 'styled-normalize';
 
